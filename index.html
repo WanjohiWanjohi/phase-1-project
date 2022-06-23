@@ -5,11 +5,11 @@
   <link href="dist/output.css" rel="stylesheet">
   <title> Receipt Reader</title>
     <body>
-      <h1 class="text-3xl font-bold underline">
-        Hello world!
+      <h1 class="text-3xl font-bold">
+       Upload An Image of Your Receipt
       </h1>
-    <form action="/">
-        <input type="file" id="myFile" name="filename">
+    <form action="/" method="POST">
+        <input type="file" id="filename" name="filename"accept=".jpg, .jpeg, .png" value = ''>
         <input type="submit" Submit/>
       </form>
 
