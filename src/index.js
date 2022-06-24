@@ -1,4 +1,4 @@
-const ocrURL = "K89818477488957"
+const ocrURL = "https://api.ocr.space/parse/image"
 
 const init = () => {
     document.querySelector('#filename').value = '';
@@ -6,17 +6,39 @@ const init = () => {
 function getFileBytes(event) {
     event.preventDefault();
     let photo = document.getElementById("filename").files[0];
-    const result = event.target.filename;
-    const reader = new FileReader();
-    const file =  reader.readAsBinaryString(photo)
-    let fileContent = ""
-    reader.addEventListener('load', (e) => {
-        fileContent = e.target.result;
-    })
-    return fileContent;
+    if (photo) {
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            uploadFile(reader.result)
+        }
+        reader.readAsDataURL(photo);
+    }
 }
-function uploadFile(fileBytes){
 
+function uploadFile(blobFile) {
+    var myHeaders = new Headers();
+    myHeaders.append("apikey", "");
+    
+    var formdata = new FormData();
+    formdata.append("language", "eng");
+    formdata.append("isOverlayRequired", "false");
+    formdata.append("base64Image", blobFile);
+    formdata.append("iscreatesearchablepdf", "false");
+    formdata.append("scale", "true");
+    formdata.append("isTable", "true");
+    formdata.append("issearchablepdfhidetextlayer", "false");
+    
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow'
+    };
+    
+    fetch("https://api.ocr.space/parse/image", requestOptions)
+      .then(response => response.json())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
 }
 const form = document.querySelector("form")
 form.addEventListener("submit", getFileBytes)
