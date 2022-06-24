@@ -1,3 +1,5 @@
+const ocrURL = "K89818477488957"
+
 const init = () => {
     document.querySelector('#filename').value = '';
 }
@@ -14,7 +16,7 @@ function getFileBytes(event) {
     return fileContent;
 }
 function uploadFile(fileBytes){
-    
+
 }
 const form = document.querySelector("form")
 form.addEventListener("submit", getFileBytes)
