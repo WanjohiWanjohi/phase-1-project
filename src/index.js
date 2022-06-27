@@ -63,7 +63,16 @@ function parseReceiptText(receiptText) {
         total: receiptTotal.substring(0, receiptTotal.length - 2) + "." + receiptTotal.substring(receiptTotal.length - 2),
         vat: VAT.substring(0, VAT.length - 2) + "." + VAT.substring(VAT.length - 2),
     }
+    
+
     console.log(receiptContent)
+    fetch("http://localhost:3000/receipts" ,{ method: "POST",
+    headers:
+    {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify(receipt)})
 
     console.log(receipt)
 }
