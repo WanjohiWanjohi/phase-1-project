@@ -82,8 +82,6 @@ function parseReceiptText(receiptText) {
         vat: VAT.substring(0, VAT.length - 2) + "." + VAT.substring(VAT.length - 2),
     }
     
-
-    console.log(receiptContent)
     fetch("http://localhost:3000/receipts" ,{ method: "POST",
     headers:
     {
