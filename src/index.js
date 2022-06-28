@@ -25,16 +25,16 @@ function loadReceiptsToTable() {
             cell2.innerHTML = receipt.subtotal;
             cell3.innerHTML = receipt.vat;
             cell4.innerHTML = receipt.total;
-            let delBtn = document.createElement("button"); 
-            delBtn.innerText ="Delete"
-            delBtn.setAttribute("id","delete")
-            delBtn.setAttribute("class" , "px-8 py-3 font-semibold rounded dark:bg-gray-100 dark:text-gray-800")
+            let delBtn = document.createElement("button");
+            delBtn.innerText = "Delete"
+            delBtn.setAttribute("id", "delete")
+            delBtn.setAttribute("class", "px-8 py-3 font-semibold rounded dark:bg-gray-100 dark:text-gray-800")
             cell5.appendChild(delBtn)
             table.appendChild(new_row);
-            delBtn.addEventListener("click", ()=>{
+            delBtn.addEventListener("click", () => {
                 new_row.remove()
             })
-            
+
         })
     })
 }
@@ -56,6 +56,7 @@ function getFileBytes(event) {
 
 function uploadFile(blobFile) {
     var myHeaders = new Headers();
+    // INSERT API KEY HERE
     myHeaders.append("apikey", "");
 
     var formdata = new FormData();
@@ -81,14 +82,20 @@ function uploadFile(blobFile) {
         .catch(error => console.log('error', error));
 }
 function parseReceipt(receiptObject) {
-    const receiptDetails = receiptObject.ParsedResults[0]
-    const receiptLines = receiptDetails.TextOverlay.Lines
-    parseReceiptText(receiptDetails.ParsedText)
+    console.log(receiptObject)
+    console.log(typeof (receiptObject))
+    if (typeof (receiptObject) === 'object') {
+        const receiptDetails = receiptObject.ParsedResults[0]
+        const receiptLines = receiptDetails.TextOverlay.Lines
+        parseReceiptText(receiptDetails.ParsedText)
+    }
+    else if (typeof (receiptObject) == 'string') {
+        window.alert(receiptObject)
+    }
 }
 function parseReceiptText(receiptText) {
     // extremely reliant on this one receipt
     let receiptContent = receiptText.split("\t\r\n").map(element => {
-
         return element.toLowerCase().replace('\t', ' ');
     });
 
