@@ -7,6 +7,14 @@
       "total": "725.00",
       "vat": "49.06",
       "id": 1
+    },
+    {
+      "store": "naivas limited",
+      "date": "17/06/2022",
+      "subtotal": "675.34",
+      "total": "725.00",
+      "vat": "49.06",
+      "id": 2
     }
   ]
 }

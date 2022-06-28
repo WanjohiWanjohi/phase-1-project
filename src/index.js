@@ -1,24 +1,45 @@
 const ocrURL = "https://api.ocr.space/parse/image"
 
 const init = () => {
-    const table = document.querySelector('table');    
+    let fileupload = document.getElementById("filename")
+    fileupload.value = ''
+    loadReceiptsToTable()
+
+}
+function loadReceiptsToTable() {
+    const table = document.querySelector('table');
     const allReceipts = getReceipts()
     allReceipts.then((response) => {
         console.log(response)
         response.forEach(receipt => {
-            console.log(receipt)            
-            var new_row = table.rows[1].cloneNode(true);
-            var len = table.rows.length;
-            new_row.cells[0].innerHTML = receipt.date;
-            new_row.cells[1].innerHTML = receipt.store;
-            new_row.cells[2].innerHTML = receipt.subtotal;
-            new_row.cells[3].innerHTML = receipt.vat;
-            new_row.cells[4].innerHTML = receipt.total;
-            table.appendChild( new_row );
+            var new_row = table.insertRow();
+            var cell0 = new_row.insertCell(0);
+            var cell1 = new_row.insertCell(1);
+            var cell2 = new_row.insertCell(2);
+            var cell3 = new_row.insertCell(3);
+            var cell4 = new_row.insertCell(4);
+            var cell5 = new_row.insertCell(5);
+
+            cell0.innerHTML = receipt.date;
+            cell1.innerHTML = receipt.store;
+            cell2.innerHTML = receipt.subtotal;
+            cell3.innerHTML = receipt.vat;
+            cell4.innerHTML = receipt.total;
+            let delBtn = document.createElement("button"); 
+            delBtn.innerText ="Delete"
+            delBtn.setAttribute("id","delete")
+            delBtn.setAttribute("class" , "px-8 py-3 font-semibold rounded dark:bg-gray-100 dark:text-gray-800")
+            cell5.appendChild(delBtn)
+            table.appendChild(new_row);
+            delBtn.addEventListener("click", ()=>{
+                new_row.remove()
+            })
+            
         })
     })
 }
-function getReceipts(){
+
+function getReceipts() {
     return fetch("http://localhost:3000/receipts").then(response => response.json())
 }
 function getFileBytes(event) {
@@ -70,7 +91,7 @@ function parseReceiptText(receiptText) {
 
         return element.toLowerCase().replace('\t', ' ');
     });
-    
+
     const receiptTotal = receiptContent[21].replace(/\D/g, '');
     const subTotal = receiptContent[receiptContent.findIndex(v => v.includes("subtotal"))].replace(/\D/g, '')
     const VAT = receiptContent[20].replace(/\D/g, '');
@@ -81,14 +102,17 @@ function parseReceiptText(receiptText) {
         total: receiptTotal.substring(0, receiptTotal.length - 2) + "." + receiptTotal.substring(receiptTotal.length - 2),
         vat: VAT.substring(0, VAT.length - 2) + "." + VAT.substring(VAT.length - 2),
     }
-    
-    fetch("http://localhost:3000/receipts" ,{ method: "POST",
-    headers:
-    {
-      "Content-Type": "application/json",
-      Accept: "application/json"
-    },
-    body: JSON.stringify(receipt)})
+
+    fetch("http://localhost:3000/receipts", {
+        method: "POST",
+        headers:
+        {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: JSON.stringify(receipt)
+    })
+    loadReceiptsToTable()
 
     console.log(receipt)
 }
