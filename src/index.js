@@ -57,7 +57,7 @@ function getFileBytes(event) {
 function uploadFile(blobFile) {
     var myHeaders = new Headers();
     // INSERT API KEY HERE
-    myHeaders.append("apikey", "");
+    myHeaders.append("apikey", "K89818477488957");
 
     var formdata = new FormData();
     formdata.append("language", "eng");
